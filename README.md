@@ -2,6 +2,13 @@
 
 This project provides a setup to run MinIO Mint S3 test suite against a Dockerized Apache Ozone cluster.
 
+## Related Projects
+
+*   **MinIO Mint:** The official MinIO Mint repository can be found [here](https://github.com/minio/mint).
+*   **Apache Ozone Website:** The official Apache Ozone website is available [here](https://ozone.apache.org/).
+*   **Apache Ozone GitHub Repository:** The Apache Ozone GitHub repository can be found [here](https://github.com/apache/ozone).
+
+
 ## Prerequisites
 
 ### AWS CLI
@@ -61,3 +68,6 @@ podman machine start
     export SECRET_KEY="your_ozone_secret_key" # <<< REPLACE THIS
     ```
 
+## License
+
+This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for details.
