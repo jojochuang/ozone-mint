@@ -31,9 +31,9 @@ fi
 # IMPORTANT: Replace these placeholder values with your actual Ozone S3 access and secret keys.
 # For a default Ozone setup, these might be 'ozone_access_key' and 'ozone_secret_key'.
 export SERVER_ENDPOINT="host.containers.internal:9878"
-export ACCESS_KEY="ozone_access_key" # <<< REPLACE WITH YOUR OZONE S3 ACCESS KEY
-export SECRET_KEY="ozone_secret_key" # <<< REPLACE WITH YOUR OZONE S3 SECRET KEY
-export ENABLE_HTTPS="off" # Set to "on" if you configure HTTPS for Ozone S3G
+export ACCESS_KEY="testkey"
+export SECRET_KEY="testsecret"
+export ENABLE_HTTPS=0 # Set to 1 if you configure HTTPS for Ozone S3G
 
 echo "MinIO Mint environment variables configured:"
 echo "  SERVER_ENDPOINT: $SERVER_ENDPOINT"
