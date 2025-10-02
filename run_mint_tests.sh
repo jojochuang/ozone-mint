@@ -2,7 +2,7 @@
 
 # Step 1: Run setup_ozone.sh to start the Ozone cluster and configure AWS S3 CLI
 echo "Setting up Ozone cluster and AWS S3 CLI..."
-./setup_ozone.sh
+./setup_ozone.sh "$@"
 
 # Step 2: Check for Podman installation
 if ! command -v podman &> /dev/null
@@ -18,7 +18,8 @@ fi
 
 # Check if Podman machine is running (for macOS/Windows)
 if [[ "$(uname)" == "Darwin" || "$(uname)" == "MINGW" ]]; then
-    if ! podman machine list | grep -qi Running; then
+    if ! podman machine list | grep -qi Running;
+    then
         echo "Error: Podman machine is not running."
         echo "Please initialize and start the Podman machine:"
         echo "  podman machine init"
@@ -57,6 +58,19 @@ echo "MinIO Mint tests completed. Review the output above for test results."
 
 # Step 5: Stop Ozone cluster
 echo "Stopping Ozone cluster..."
-docker-compose -f docker/docker-compose.yaml down
+if [ -z "$1" ]; then
+  # No argument was provided, so shut down the default cluster
+  docker-compose -f docker/docker-compose.yaml down
+else
+  # An argument was provided, so we need to find the compose directory again and shut it down.
+  OZONE_DEV_PATH=$1
+  COMPOSE_DIR_PATTERN="$OZONE_DEV_PATH/hadoop-ozone/dist/target/ozone-*/compose/ozone"
+  COMPOSE_DIR=$(ls -d $COMPOSE_DIR_PATTERN 2>/dev/null | head -n 1)
+  if [ -n "$COMPOSE_DIR" ] && [ -d "$COMPOSE_DIR" ]; then
+    (cd "$COMPOSE_DIR" && docker-compose down)
+  else
+    echo "Warning: Could not find compose directory to shut down the development cluster."
+  fi
+fi
 
 echo "Script finished."

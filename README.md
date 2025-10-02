@@ -45,28 +45,45 @@ podman machine start
 
 ## Running the Tests
 
-1.  **Start the Ozone Cluster and Run MinIO Mint Tests:**
+This suite can be run against the default Dockerized Ozone cluster or a local development build.
 
-    Execute the `run_mint_tests.sh` script. This script will:
-    *   Start the Dockerized Ozone cluster.
-    *   Wait for the Ozone SCM to exit safe mode.
-    *   Configure the AWS S3 CLI to connect to the Ozone S3 Gateway.
-    *   Run the MinIO Mint S3 test suite against the Ozone cluster.
-    *   Stop the Ozone cluster after the tests complete.
+### 1. Running Against the Default Ozone Cluster
 
-    ```bash
-    ./run_mint_tests.sh
-    ```
+To run the tests against the pre-configured Ozone cluster, execute the `run_mint_tests.sh` script without any arguments.
 
-2.  **Configure Ozone S3 Access Keys (Important!):
+```bash
+./run_mint_tests.sh
+```
 
-    Before running the tests, you **must** update the `ACCESS_KEY` and `SECRET_KEY` environment variables in `run_mint_tests.sh` with your actual Ozone S3 access and secret keys. For a default Ozone setup, these are typically `ozone_access_key` and `ozone_secret_key`.
+This script will:
+*   Start the Dockerized Ozone cluster using the provided `docker-compose.yaml`.
+*   Wait for the Ozone SCM to exit safe mode.
+*   Configure the AWS S3 CLI to connect to the Ozone S3 Gateway.
+*   Run the MinIO Mint S3 test suite against the Ozone cluster.
+*   Stop the Ozone cluster after the tests complete.
 
-    ```bash
-    # run_mint_tests.sh
-    export ACCESS_KEY="your_ozone_access_key" # <<< REPLACE THIS
-    export SECRET_KEY="your_ozone_secret_key" # <<< REPLACE THIS
-    ```
+### 2. Running Against a Local Development Build
+
+To run the tests against an Ozone cluster built from local source code, you must first produce a full build of the Ozone project. Once built, provide the path to your Ozone repository as an argument to the `run_mint_tests.sh` script.
+
+```bash
+./run_mint_tests.sh /path/to/your/ozone/repository
+```
+
+The script will then:
+*   Locate the compose files in your local build (`hadoop-ozone/dist/target/ozone-*/compose/ozone`).
+*   Start the Ozone cluster from your local build.
+*   Proceed with the same testing steps as the default execution.
+
+### 3. Configure Ozone S3 Access Keys (Important!)
+
+Before running the tests in either mode, you **must** update the `ACCESS_KEY` and `SECRET_KEY` environment variables in `run_mint_tests.sh` with your actual Ozone S3 access and secret keys. For a default Ozone setup, these are typically `ozone_access_key` and `ozone_secret_key`.
+
+```bash
+# run_mint_tests.sh
+export ACCESS_KEY="your_ozone_access_key" # <<< REPLACE THIS
+export SECRET_KEY="your_ozone_secret_key" # <<< REPLACE THIS
+```
 
 ## License
 
